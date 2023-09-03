@@ -70,11 +70,18 @@ function Product(props) {
   const [cart, setCart] = useState([]);
   
   function addToCart(data) {
-    // console.log(data);
-    const newCart = [...cart, data];
-    setCart(newCart);
+
+    console.log();
+    if (cart.every(val => val != data) == true) {
+      const newCart = [...cart, data];
+      setCart(newCart);
+    } else {alert('Already added!!')}
+    
   }
+  let sum = 0;
+  cart.map(data => sum += data.price);
   console.log();
+  function cC() {setCart([])}
   return (
     <section className='d-md-flex'>
       <div className="row row-cols-1 row-cols-md-3 g-5 m-0 w-75 width-control">
@@ -102,13 +109,13 @@ function Product(props) {
         <h4 className='text-center mt-4'>Order Summary</h4>
         <div className='ms-md-5 mt-4'>
         <p>Selected Items : {cart.length}</p>
-        <p>Total Price : 0</p>
-        <p>Total Shipping Charge : 0</p>
-        <p>Tax : 0</p>
-        <h4>Grand Total : $0</h4>
+        <p>Total Price : ${sum}</p>
+        <p>Total Shipping Charge : ${cart.length*20}</p>
+        <p>Tax : ${sum*10/100}</p>
+        <h4>Grand Total : ${(sum)+(cart.length*20)+(sum*10/100)}</h4>
         </div><br /><br />
         <div className='text-center'>
-          <button type='button' className='border w-75 p-2'>Clear Cart</button><br /><br />
+          <button onClick={cC} type='button' className='border w-75 p-2'>Clear Cart</button><br /><br />
           <button type='button' className='border w-75 p-2'>Review Order</button>
         </div>
       </article>
