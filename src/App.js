@@ -55,33 +55,54 @@ function Shop() {
     .then(res => res.json())
     .then(data => setProducts(data))
   }, []);
-  // console.log(products[0] ? products[0].id:"missing");
+  const [cart, setCart] = useState([]);
+  let arr = [];
+  if (products.length > 0) {for (let i = 1; i <= localStorage.length; i++) {arr.push(products.find(x => x.id == localStorage.getItem(i)))}} 
+  if (arr.length > 0) {setCart(arr)}
+  function storedCart() {
+
+  }
+  
+ 
+    
   return (
     <div className='container-fluid'>
       {/* <h1 className='text-center'>Products length : {products.length}</h1> */}
-      <Product products={products} />
+      <Product products={products} cart={cart} setCart={setCart} storedCart={storedCart} />
       
     </div>
   );
 }
 
 function Product(props) {
-  // console.log(props.products[0]);
-  const [cart, setCart] = useState([]);
+
+  const {cart, setCart, storedCart} = props;
+
+  
+
+
+
+
   
   function addToCart(data) {
 
-    console.log();
+    
     if (cart.every(val => val != data) == true) {
+      // console.log(data.id);
       const newCart = [...cart, data];
       setCart(newCart);
+      localStorage.setItem(newCart.length, data.id);
     } else {alert('Already added!!')}
-    
+      
   }
+  // console.log(cart);
+  
   let sum = 0;
   cart.map(data => sum += data.price);
-  console.log();
-  function cC() {setCart([])}
+  function cC() {
+    setCart([]);
+    localStorage.clear();
+  }
   return (
     <section className='d-md-flex'>
       <div className="row row-cols-1 row-cols-md-3 g-5 m-0 w-75 width-control">
@@ -105,7 +126,7 @@ function Product(props) {
         );
       })}
       </div>
-      <article className='w-25 width-control text-bg-secondary mt-2 p-3'>
+      <article className='w-25 width-control text-bg-secondary mt-2 mt-md-0 p-3 scrolling'>
         <h4 className='text-center mt-4'>Order Summary</h4>
         <div className='ms-md-5 mt-4'>
         <p>Selected Items : {cart.length}</p>
@@ -116,7 +137,7 @@ function Product(props) {
         </div><br /><br />
         <div className='text-center'>
           <button onClick={cC} type='button' className='border w-75 p-2'>Clear Cart</button><br /><br />
-          <button type='button' className='border w-75 p-2'>Review Order</button>
+          <button onClick={storedCart} type='button' className='border w-75 p-2'>Load Previous Cart</button>
         </div>
       </article>
     </section>
