@@ -56,11 +56,11 @@ function Shop() {
     .then(data => setProducts(data))
   }, []);
   const [cart, setCart] = useState([]);
-  let arr = [];
-  if (products.length > 0) {for (let i = 1; i <= localStorage.length; i++) {arr.push(products.find(x => x.id == localStorage.getItem(i)))}} 
-  if (arr.length > 0) {setCart(arr)}
-  function storedCart() {
 
+  function storedCart() {
+    let arr = [];
+    if (products.length > 0) {for (let i = 1; i <= localStorage.length; i++) {arr.push(products.find(x => x.id == localStorage.getItem(i)))}} 
+    if (arr.length > 0) {setCart(arr)}
   }
   
  
